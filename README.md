@@ -1,7 +1,6 @@
-<p align="middle" >
-  # 📑
+<p align="middle" >  
 </p>
-<h1 align="middle">게시판 만들기</h1>
+<h1 align="middle">📑 게시판 만들기</h1>
 
 ## 🎯 기능 요구사항
 
