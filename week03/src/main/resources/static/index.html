@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="css/memos.css">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="app.js"></script>
+
+    <title>Bulletin</title>
+</head>
+<body>
+<button class="create-btn" onclick="showMemoBox()"><i class="fa fa-pencil"></i> 새 글 쓰기</button>
+<div class ="memo-block">
+    <div class="memo-whole-field">
+        <input type="text" id="memos-title" placeholder="title">
+        <textarea placeholder="Write a content ..." name="contents" id="memos-content" cols="25" rows="10"></textarea>
+        <img src="images/send.png" alt="send" onclick="putMemoTitleAndContent()">
+    </div>
+    <ul class="memo-list"></ul>
+</div>
+<div class="edit-modal hidden">
+    <div class="edit-modal-overlay"></div>
+    <div class="edit-modal-content">
+
+    </div>
+</div>
+</body>
+</html>

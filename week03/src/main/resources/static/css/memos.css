@@ -1,0 +1,119 @@
+#memos-title {
+    display: block;
+    width: 18rem;
+    height: 2rem;
+}
+
+#memos-content {
+    width: 18rem;
+    height: 6rem;
+    resize: none;
+}
+.memo-whole-field {
+    display: none;
+}
+.memo-whole-field img {
+    cursor: pointer;
+    position: relative;
+    width: 1.2rem;
+    height: 1.2rem;
+    bottom: 0.3rem;
+    right: 2.2rem;
+}
+
+.memo-header, .memo-title, .memo-content {
+    background: azure;
+    margin-bottom: 0.8rem;
+}
+
+.memo-template {
+    max-width: 50rem;
+    max-height: 6rem;
+
+    padding: 0.9rem;
+    border: 0.1rem solid cadetblue;
+    border-radius: 0.5rem;
+}
+
+.memo-header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.memo-header i{
+    position: relative;
+    cursor: pointer;
+    width: 1.2rem;
+    height: 1.2rem;
+    right: 0.2rem;
+}
+
+.edit-modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.edit-modal-overlay {
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.edit-modal-content {
+    background: white;
+    padding: 3.3rem 3.3rem;
+    position: relative;
+    top: 0;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+    border-radius: 0.3rem;
+    width:40%;
+    height: 20%;
+}
+
+.edit-close-button {
+    cursor: pointer;
+    position: absolute;
+    right: 0.8rem;
+    top: 0.5rem;
+}
+
+.edit-button {
+    cursor: pointer;
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.8rem;
+}
+
+.hidden {
+    display: none;
+}
+
+#m-title {
+    margin: 0 auto;
+    display: block;
+    width: 18rem;
+    height: 2rem;
+}
+
+#m-textarea {
+    margin: 0 auto;
+    width: 18rem;
+    height: 6rem;
+    resize: none;
+}
+
+.m-title{
+    position: center;
+}
+
+.m-textarea {
+    display: flex;
+    justify-content: center;
+}
