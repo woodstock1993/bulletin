@@ -1,8 +1,8 @@
 package com.sparta.week03.controller;
 
 import com.sparta.week03.domain.Memo;
-import com.sparta.week03.domain.MemoRepository;
-import com.sparta.week03.domain.MemoRequestDto;
+import com.sparta.week03.repository.MemoRepository;
+import com.sparta.week03.dto.MemoRequestDto;
 import com.sparta.week03.service.MemoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +23,11 @@ public class MemoController {
         LocalDateTime start = LocalDateTime.now().minusDays(1);
         LocalDateTime end = LocalDateTime.now();
         return memoRepository.findAllByModifiedAtBetweenOrderByModifiedAtDesc(start, end);
+    }
+
+    @GetMapping("/api/memos/{id}")
+    public Memo getOneMemo(@PathVariable Long id) {
+        return memoService.getMemos(id);
     }
 
     @PostMapping("/api/memos")

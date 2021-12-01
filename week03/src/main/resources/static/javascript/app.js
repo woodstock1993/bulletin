@@ -1,3 +1,8 @@
+$(document).ready(function() {
+    getMemos();
+})
+
+
 function showMemoBox() {
     let memoWholeField = document.querySelector('.memo-whole-field');
     if (memoWholeField.style.display === '' || memoWholeField.style.display === 'none') {
@@ -34,14 +39,14 @@ function makeMemos(res) {
         createdAt: res.createdAt,
         modifiedAt: res.modifiedAt
     }
-    let time = res['createdAt'];
     let template = `
-        <div class="${data.id}-memo-template memo-template ${time}">
+        <div class="${data.id}-memo-template memo-template ${data.createdAt}">
             <div class="${data.id}-memo-header memo-header">                        
-                <div class='${data.id}-memo-time create-time'>${time}</div>
+                <div class='${data.id}-memo-time create-time'>${data.createdAt}</div>
                 <div>
                     <i class="far fa-trash-alt" onclick="deleteMemo(${data.id})"></i>
                     <i class="far fa-edit" onclick="openEditMemo(${data.id})"></i>
+                    <a href="html/comments.html?id=${data.id}"><i class="far fa-comment"></i></a>
                 </div>
             </div>
             <div class='${data.id}-memo-title memo-title'>${data.title}</div>
@@ -90,7 +95,7 @@ function openEditMemo(id) {
     let content = document.getElementsByClassName(`${id}-memo-contents`)[0].textContent;
 
     modalContent.innerHTML =
-            `<input type="text" value='${title}' class="${id}-m-title" id='m-title'>
+        `<input type="text" value='${title}' class="${id}-m-title" id='m-title'>
             <div class="m-textarea"><textarea placeholder="Write a content ..."  class="${id}-m-content" id='m-textarea' cols="25" rows="10">${content}
             </textarea></div>
             <span class="edit-close-button" onclick="closeEditMemo()">✖</span>
@@ -132,7 +137,3 @@ function deleteMemo(id) {
         }
     })
 }
-
-$(document).ready(function() {
-    getMemos();
-})

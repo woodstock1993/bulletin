@@ -1,0 +1,87 @@
+.comments-header {
+    margin-top: 5rem;
+
+    max-width: 50rem;
+    max-height: 3rem;
+
+    padding: 0.9rem;
+    border: 0.1rem solid cadetblue;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.comments-id {
+    border: 0.1rem solid cadetblue;
+    font-size: 0.9rem;
+    max-width: 50rem;
+    padding: 0.9rem;
+}
+
+.comments-host {
+    display: flex;
+    margin-bottom: 1rem;
+
+    justify-content: space-between;
+}
+.fa-comment {
+    cursor: pointer;
+    margin-top: 0.2rem;
+}
+.fa-user {
+    margin-right: 1rem;
+    margin-top: 0.3rem;
+}
+
+.comments-modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.comments-modal-overlay {
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.comments-modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background: white;
+    padding: 3.3rem 3.3rem;
+    position: relative;
+    top: 0;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+    border-radius: 0.3rem;
+    width:40%;
+    height: 20%;
+}
+
+.hide {
+    display: none;
+}
+
+.comments-textarea {
+    margin: 0 auto;
+    width: 20rem;
+    height: 10rem;
+    resize: none;
+}
+
+.comments-writer {
+    margin-right: 0.5rem;
+}
+
+.comments-content {
+    margin-left: 2rem;
+}
