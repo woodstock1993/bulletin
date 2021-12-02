@@ -5,6 +5,7 @@ import com.sparta.week03.domain.Memo;
 import com.sparta.week03.dto.CommentsRequestDto;
 import com.sparta.week03.repository.CommentsRepository;
 import com.sparta.week03.repository.MemoRepository;
+import com.sparta.week03.service.CommentsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,10 +13,12 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-public class MemoCommentsController {
+public class CommentsController {
 
     private final MemoRepository memoRepository;
     private final CommentsRepository commentsRepository;
+
+    private final CommentsService commentsService;
 
     @GetMapping("/api/comments/{id}")
     public List<Comments> pictureComments(@PathVariable Long id) {
@@ -29,5 +32,20 @@ public class MemoCommentsController {
                 ()-> new NullPointerException("메모에 해당하는 아이디가 없습니다."));
         Comments comments = new Comments(commentsRequestDto, memo);
         return commentsRepository.save(comments);
+    }
+
+    @PutMapping("/api/comments/{comments_id}")
+    public Long editComments(@PathVariable Long comments_id, @RequestBody CommentsRequestDto commentsRequestDto) {
+        commentsService.commentsUpdate(comments_id, commentsRequestDto);
+        return comments_id;
+    }
+
+    @DeleteMapping("/api/comments/{comments_id}")
+    public Long deleteComments(@PathVariable Long comments_id) {
+        Comments comments = commentsRepository.findById(comments_id).orElseThrow(
+                () -> new NullPointerException("찾으려는 comments ID가 없습니다")
+        );
+        commentsRepository.delete(comments);
+        return comments_id;
     }
 }

@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Entity
 public class Comments extends Timestamped {
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 
@@ -33,6 +33,8 @@ public class Comments extends Timestamped {
     }
 
     public void update(CommentsRequestDto requestDto) {
+        System.out.println(requestDto.getComments());
         this.comment = requestDto.getComments();
+        System.out.println("comments id "+requestDto.getComments()+"가 업데이트되었습니다");
     }
 }

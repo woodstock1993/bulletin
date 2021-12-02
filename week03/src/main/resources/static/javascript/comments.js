@@ -50,21 +50,60 @@ function closeComments() {
     commentsModal.classList.add('hide');
 }
 
-function deleteComments(id) {
+function deleteComments(comments_id, memo_id ) {
+    console.log(`memo_id: ${memo_id}`);
     $.ajax({
         type: "DELETE",
-        url: `/api/memos/${id}`,
+        url: `/api/comments/${comments_id}`,
         success: function(response) {
-            getMemos();
-            console.log(`id ${response} is deleted`);
+            console.log(`comments id ${response} is deleted`);
         }
     })
+    window.location.reload();
+}
+
+function openEditComments(comments_id) {
+    console.log(comments_id);
+    let commentsContent = document.getElementsByClassName(`${comments_id}-comments-content`)[0];
+    let commentsFix  = document.getElementsByClassName(`${comments_id}-comments-fix`)[0];
+    let commentsFixButton = document.getElementsByClassName(`${comments_id}-comments-fix-button`)[0];
+
+    commentsContent.classList.add('hide');
+    commentsFix.classList.remove('hide');
+    commentsFixButton.classList.remove('hide');
+}
+
+function editComments(comments_id, memo_id) {
+    let commentsContent = document.getElementsByClassName(`${comments_id}-comments-content`)[0];
+    let commentsFix  = document.getElementsByClassName(`${comments_id}-comments-fix`)[0];
+    let commentsFixButton = document.getElementsByClassName(`${comments_id}-comments-fix-button`)[0];
+    let commentsFixTextArea = document.getElementsByClassName(`${comments_id}-comments-fix-textarea`)[0];
+
+    let fixedComments = commentsFixTextArea.value;
+
+    console.log(`fixedComments의 값: ${fixedComments}`);
+
+    $.ajax({
+        type: "PUT",
+        url: `/api/comments/${comments_id}`,
+        contentType: "application/json",
+        data: JSON.stringify({
+            comments: `${fixedComments}`
+        }),
+        success: function(response) {
+            console.log(`comments id: ${response} 가 성공적으로 업데이트되었습니다.`);
+        }
+    })
+
+    commentsContent.classList.remove('hide');
+    commentsFix.classList.add('hide');
+    commentsFixButton.classList.add('hide');
+
+    window.location.reload();
 }
 
 function drawComments(id) {
     let commentsList = document.getElementsByClassName("comments-block")[0];
-    console.log(commentsList);
-
     commentsList.innerHTML = "";
 
     $.ajax({
@@ -73,6 +112,7 @@ function drawComments(id) {
         contentType: "application/json",
         success: function(response) {
             console.log(response.length);
+            console.log(response);
             for(let i = 0; i < response.length; i++) {
                 let template = `
                     <div class="comments-id">
@@ -83,10 +123,13 @@ function drawComments(id) {
                                     <span class="comments-writer">작성자</span>
                                     <span>${response[i].createdAt}</span>
                                 </div>
-                            </div>                            
-                            <i class="far fa-trash-alt" onclick="deleteComments(${response[i].id}"></i>
+                            </div>
+                            <i class="far fa-edit" onclick="openEditComments(${response[i].id})"></i>                            
+                            <i class="far fa-trash-alt" onclick="deleteComments(${response[i].id}, ${id})"></i>
                         </div>
-                    <div class="comments-content">${response[i].comment}</div>
+                    <div class="${response[i].id}-comments-content">${response[i].comment}</div>
+                    <div class="${response[i].id}-comments-fix hide"><textarea class="${response[i].id}-comments-fix-textarea" cols="30" rows="5">${response[i].comment}</textarea></div>
+                    <button class="${response[i].id}-comments-fix-button hide" onclick="editComments(${response[i].id}, ${id})">수정하기</button>
                     </div>
                 `
                 commentsList.innerHTML += template;

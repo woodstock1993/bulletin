@@ -85,3 +85,8 @@
 .comments-content {
     margin-left: 2rem;
 }
+
+.fa-edit, .fa-trash-alt {
+    cursor: pointer;
+}
+
