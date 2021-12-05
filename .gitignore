@@ -2,4 +2,4 @@
 .gradle
 build
 HELP.md
-/*.properties
+week03/src/main/resources/application.properties
