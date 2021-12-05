@@ -10,6 +10,9 @@
     <meta property="og:title" content="wood's memo">
     <meta property="og:description" content="오늘 무슨일이 있었는지 글을 남겨주세요">
     <meta property="og:image" content="images/pepe.png">
+    <meta name="description" content="Make your memos and comments here,
+                                      and see other people's memos and comments,
+                                      which will make your life happy">
 
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
@@ -27,23 +30,30 @@
     <title>Bulletin</title>
 </head>
 <body>
-<button class="create-btn" onclick="showMemoBox()"><i class="fa fa-pencil"></i> 새 글 쓰기</button>
+<div id="memo-home">
+<div>
 <div class ="memo-block">
+    <div class="memo-write-block"></div>
     <div class="memo-whole-field">
         <input type="text" id="memos-title" placeholder="title">
         <textarea placeholder="Write a content ..." name="contents" id="memos-content" cols="25" rows="10"></textarea>
         <img src="images/send.png" alt="send" onclick="putMemoTitleAndContent()">
     </div>
-    <ul class="memo-list"></ul>
+    <div class="memo-list"></div>
 </div>
-<div class="memo-pages-block">
-    <div class="memo-pages-front"></div>
-    <div class="memo-pages-rear"></div>
+<div class="memo-pages-wrapper">
+    <div class="memo-pages-block">
+        <div class="memo-pages-front"></div>
+        <div class="memo-pages-rear"></div>
+    </div>
 </div>
 <div class="edit-modal hidden">
     <div class="edit-modal-overlay"></div>
     <div class="edit-modal-content">
+        <div class="modal-edit-input"></div>
     </div>
+</div>
+</div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>

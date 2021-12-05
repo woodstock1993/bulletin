@@ -7,13 +7,8 @@ import com.sparta.week03.dto.MemoRequestDto;
 import com.sparta.week03.service.MemoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
-
-
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -43,8 +38,6 @@ public class MemoController {
 
     @GetMapping("/api/memos")
     public List<Memo> getMemos() {
-        //LocalDateTime start = LocalDateTime.now().minusDays(1);
-        //LocalDateTime end = LocalDateTime.now();
         return memoRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 

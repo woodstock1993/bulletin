@@ -1,8 +1,17 @@
 let totalMemos = 0;
 
 $(document).ready(function () {
-    getSomeMemos(0, 25);
+    paintMemoBox();
+    getSomeMemos(0, 5);
 })
+
+function paintMemoBox() {
+    let memoBox = document.querySelector('.memo-write-block');
+    let template = `<button class="create-btn" onclick="showMemoBox()"><i class="fa fa-pencil"></i> 새 글 쓰기</button>`
+
+    memoBox.innerHTML = '';
+    memoBox.innerHTML += template;
+}
 
 //글상자 여닫는 함수
 function showMemoBox() {
@@ -82,26 +91,12 @@ function transCurrentPage() {
     console.log(`startPage: ${startPage}`);
 
     let pageSize = pageSelect.options[pageSelect.selectedIndex].value;
-    if (pageSize.length === 2) {
-        pageSize = parseInt(pageSize);
-        currentPage = Number(startPage/pageSize);
-        getSomeMemos(currentPage, pageSize)
-    }
+
+    pageSize = parseInt(pageSize);
+    currentPage = Math.floor(startPage/pageSize);
+    getSomeMemos(currentPage, pageSize)
 }
 
-function getCurrentPageAndPageSize(pageSize) {
-    console.log(`pageSizegetCurrent: ${pageSize}`);
-    let pageSelect = document.getElementById('memo-pages');
-    let memoPagesTail = document.querySelector('.memo-offset');
-    let currentPage = (parseInt(memoPagesTail.textContent) -1) / pageSize;
-
-    let pageSelectedValue = pageSelect.options[pageSelect.selectedIndex].value;
-    if (pageSelectedValue.length === 2) {
-        pageSelectedValue = parseInt(pageSelectedValue);
-        getSomeMemos(currentPage, pageSelectedValue);
-    }
-
-}
 
 // pagination 보여주는 함수
 function showMemoPagination(currentPage, pageSize, totalPages, totalMemos) {
@@ -111,9 +106,11 @@ function showMemoPagination(currentPage, pageSize, totalPages, totalMemos) {
         <div class="memo-pages-head">items per pages</div>
         <select id="memo-pages" onchange="transCurrentPage()">
             <option value="page">select pages</option>
+            <option value="5">5</option>
             <option value="10">10</option>
             <option value="25">25</option>
             <option value="50">50</option>
+            <option value="100">100</option>
         </select>
         `
     memoPaginationFront.innerHTML = "";
@@ -179,8 +176,10 @@ function getSomeMemos(currentPage, pageSize) {
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
             let res = response.response.content;
+            console.log(res);
             totalMemos = response.response.totalElements;
             totalPages = response.response.totalPages;
+            console.log('getSomeMemos 무사동작',totalMemos, totalPages);
             //순서 중요
             showArrowPagination(currentPage, pageSize, totalPages, totalMemos);
             for (let i = 0; i < res.length; i++) {
@@ -212,11 +211,11 @@ function getMemos() {
 // 편집하는 메모상자를 열어주는 함수
 function openEditMemo(id) {
     let modal = document.querySelector('.edit-modal');
-    let modalContent = document.querySelector('.edit-modal-content')
+    let modalEditInput = document.querySelector('.modal-edit-input');
     let title = document.getElementsByClassName(`${id}-memo-title`)[0].textContent;
     let content = document.getElementsByClassName(`${id}-memo-contents`)[0].textContent;
 
-    modalContent.innerHTML =
+    modalEditInput.innerHTML =
         `<input type="text" value='${title}' class="${id}-m-title" id='m-title'>
             <div class="m-textarea"><textarea placeholder="Write a content ..."  class="${id}-m-content" id='m-textarea' cols="25" rows="10">${content}
             </textarea></div>
@@ -230,7 +229,6 @@ function openEditMemo(id) {
 function closeEditMemo() {
     let modal = document.querySelector('.edit-modal');
     modal.classList.add('hidden');
-    getMemos();
 }
 
 // 메모를 수정해서 데이터를 DB로 보내는 함수
