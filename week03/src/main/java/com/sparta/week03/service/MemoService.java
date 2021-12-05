@@ -7,9 +7,14 @@ import com.sparta.week03.dto.MemoRequestDto;
 import com.sparta.week03.dto.CommentsRequestDto;
 import com.sparta.week03.repository.CommentsRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor // final 있는 부분 있으면 자동으로 넣어줄게
 @Service
@@ -39,5 +44,18 @@ public class MemoService {
         Memo memo = memoRepository.findById(id).orElseThrow(
                 () -> new NullPointerException("해당 아이디가 존재하지 않습니다."));
         return memo;
+    }
+
+    public List<Memo> findAllMemos() {
+        return memoRepository.findAll();
+    }
+
+    public List<Memo> findMemosWithSorting(String field) {
+        return memoRepository.findAll(Sort.by(Sort.Direction.DESC,field));
+    }
+
+    public Page<Memo> findMemosWithPaginationAndSort(int offset, int pageSize, String field) {
+        Page<Memo> memos =  memoRepository.findAll(PageRequest.of(offset, pageSize).withSort(Sort.Direction.DESC, field));
+        return memos;
     }
 }

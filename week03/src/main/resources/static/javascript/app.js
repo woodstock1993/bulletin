@@ -1,8 +1,10 @@
-$(document).ready(function() {
-    getMemos();
+let totalMemos = 0;
+
+$(document).ready(function () {
+    getSomeMemos(0, 25);
 })
 
-
+//글상자 여닫는 함수
 function showMemoBox() {
     let memoWholeField = document.querySelector('.memo-whole-field');
     if (memoWholeField.style.display === '' || memoWholeField.style.display === 'none') {
@@ -12,6 +14,113 @@ function showMemoBox() {
     }
 }
 
+// 글 제목과 내용을 입력하게 하는 함수
+function memoBoxValidationCheck() {
+    let memoTitle = document.getElementById('memos-title').value;
+    let memoContent = document.getElementById('memos-content').value;
+
+    if (memoTitle === '' || memoContent === '') {
+        alert('제목 또는 내용을 입력해주세요.');
+        return false;
+    }
+    return true;
+}
+
+// 제목과 내용을 기입할 시 DB로 데이터를 보내는 함수
+function putMemoTitleAndContent() {
+    if (memoBoxValidationCheck() === true) {
+        sendMemoData();
+    }
+}
+
+// pagination 왼쪽 화살표
+function leftArrowPagination(currentPage, pageSize, totalPages, totalMemos) {
+    if (currentPage === 0) return;
+    getSomeMemos(currentPage-1, pageSize)
+}
+
+// pagination 오른쪽 화살표
+function rightArrowPagination(currentPage, pageSize, totalPages, totalMemos) {
+    let currentTotalMemos = (currentPage + 1) * pageSize
+    if (currentTotalMemos >= totalMemos) {
+        getSomeMemos(currentPage, pageSize)
+        return;
+    }
+    getSomeMemos(currentPage+1, pageSize)
+}
+
+// arrow pagination 보여주는 함수
+function showArrowPagination(currentPage, pageSize, totalPages, totalMemos) {
+    let memoPaginationRear = document.querySelector('.memo-pages-rear');
+    let template = `
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" onclick="leftArrowPagination(${currentPage}, ${pageSize}, ${totalPages}, ${totalMemos})"><i class="fas fa-chevron-left"></i></a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" onclick="rightArrowPagination(${currentPage}, ${pageSize}, ${totalPages}, ${totalMemos})"><i class="fas fa-chevron-right"></i></a>
+                </li>
+            </ul>
+        </nav>
+        <div class="memo-pages-tail">
+        <span class="memo-offset">${currentPage * pageSize + 1}</span>
+        -
+        <span>${currentPage * pageSize + pageSize}</span>
+         of 
+         <span>${totalMemos}</span>
+         </div>`
+    memoPaginationRear.innerHTML = "";
+    memoPaginationRear.innerHTML += template;
+}
+
+function transCurrentPage() {
+    let pageSelect = document.getElementById('memo-pages');
+    let memoPagesTail = document.querySelector('.memo-offset');
+    let startPage = (parseInt(memoPagesTail.textContent) - 1);
+    let currentPage = 0;
+    console.log(`startPage: ${startPage}`);
+
+    let pageSize = pageSelect.options[pageSelect.selectedIndex].value;
+    if (pageSize.length === 2) {
+        pageSize = parseInt(pageSize);
+        currentPage = Number(startPage/pageSize);
+        getSomeMemos(currentPage, pageSize)
+    }
+}
+
+function getCurrentPageAndPageSize(pageSize) {
+    console.log(`pageSizegetCurrent: ${pageSize}`);
+    let pageSelect = document.getElementById('memo-pages');
+    let memoPagesTail = document.querySelector('.memo-offset');
+    let currentPage = (parseInt(memoPagesTail.textContent) -1) / pageSize;
+
+    let pageSelectedValue = pageSelect.options[pageSelect.selectedIndex].value;
+    if (pageSelectedValue.length === 2) {
+        pageSelectedValue = parseInt(pageSelectedValue);
+        getSomeMemos(currentPage, pageSelectedValue);
+    }
+
+}
+
+// pagination 보여주는 함수
+function showMemoPagination(currentPage, pageSize, totalPages, totalMemos) {
+    let memoPaginationFront = document.querySelector('.memo-pages-front');
+    console.log(`pageSize: ${pageSize}`);
+    let template = `
+        <div class="memo-pages-head">items per pages</div>
+        <select id="memo-pages" onchange="transCurrentPage()">
+            <option value="page">select pages</option>
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+        </select>
+        `
+    memoPaginationFront.innerHTML = "";
+    memoPaginationFront.innerHTML += template;
+}
+
+//DB로 메모정보 보내는 함수
 function sendMemoData() {
     let memoTitle = document.getElementById('memos-title').value;
     let memoContent = document.getElementById('memos-content').value;
@@ -30,6 +139,7 @@ function sendMemoData() {
     })
 }
 
+//정해진 개수만큼 글상자 만드는 함수
 function makeMemos(res) {
     let memoPostField = document.querySelector('.memo-list');
     let data = {
@@ -56,6 +166,32 @@ function makeMemos(res) {
     memoPostField.innerHTML += template
 }
 
+// 지정된 개수 만큼 메모를 보여주는 함수
+function getSomeMemos(currentPage, pageSize) {
+    let memoPostField = document.querySelector('.memo-list');
+    memoPostField.innerHTML = ''
+    let field = 'id';
+    let totalPages;
+    let totalMemos;
+    $.ajax({
+        type: "GET",
+        url: `/paginationAndSort/${currentPage}/${pageSize}/${field}`,
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+            let res = response.response.content;
+            totalMemos = response.response.totalElements;
+            totalPages = response.response.totalPages;
+            //순서 중요
+            showArrowPagination(currentPage, pageSize, totalPages, totalMemos);
+            for (let i = 0; i < res.length; i++) {
+                makeMemos(res[i])
+            }
+            showMemoPagination(currentPage, pageSize, totalPages, totalMemos);
+        }
+    })
+}
+
+// 전체 메모를 그려주는 함수
 function getMemos() {
     let memoPostField = document.querySelector('.memo-list');
     memoPostField.innerHTML = ''
@@ -65,29 +201,15 @@ function getMemos() {
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
             for (let i = 0; i < response.length; i++) {
+                console.log(`response.length:${response.length}`);
                 makeMemos(response[i])
             }
+            console.log(`totalMemos: ${totalMemos}`)
         }
     })
 }
 
-function memoBoxValidationCheck() {
-    let memoTitle = document.getElementById('memos-title').value;
-    let memoContent = document.getElementById('memos-content').value;
-
-    if (memoTitle === '' || memoContent === '') {
-        alert('제목 또는 내용을 입력해주세요.');
-        return false;
-    }
-    return true;
-}
-
-function putMemoTitleAndContent() {
-    if (memoBoxValidationCheck() === true) {
-        sendMemoData();
-    }
-}
-
+// 편집하는 메모상자를 열어주는 함수
 function openEditMemo(id) {
     let modal = document.querySelector('.edit-modal');
     let modalContent = document.querySelector('.edit-modal-content')
@@ -104,6 +226,14 @@ function openEditMemo(id) {
     modal.classList.remove("hidden");
 }
 
+// 편집하는 메모상자를 닫는 함수
+function closeEditMemo() {
+    let modal = document.querySelector('.edit-modal');
+    modal.classList.add('hidden');
+    getMemos();
+}
+
+// 메모를 수정해서 데이터를 DB로 보내는 함수
 function editMemo(id) {
     let title = document.getElementsByClassName(`${id}-m-title`)[0].value;
     let content = document.getElementsByClassName(`${id}-m-content`)[0].value;
@@ -114,24 +244,19 @@ function editMemo(id) {
         url: `/api/memos/${id}`,
         contentType: "application/json",
         data: JSON.stringify(data),
-        success: function(res) {
+        success: function (res) {
             window.location.reload();
             console.log(`id: ${res}번 게시물이 수정되었습니다.`);
         }
     });
 }
 
-function closeEditMemo() {
-    let modal = document.querySelector('.edit-modal');
-    modal.classList.add('hidden');
-    getMemos();
-}
-
+// 메모를 삭제하는 함수
 function deleteMemo(id) {
     $.ajax({
         type: "DELETE",
         url: `/api/memos/${id}`,
-        success: function(response) {
+        success: function (response) {
             getMemos();
             console.log(`id ${response} is deleted`);
         }

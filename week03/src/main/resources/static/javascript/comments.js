@@ -1,7 +1,7 @@
 let MemoId;
 
 $(document).ready(function () {
-    getMemosComments();
+    getMemosComments()
     drawComments(MemoId);
 })
 

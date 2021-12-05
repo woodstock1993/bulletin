@@ -1,3 +1,7 @@
+.create-btn {
+    margin-bottom: 3rem;
+}
+
 #memos-title {
     display: block;
     width: 18rem;
@@ -28,7 +32,7 @@
 
 .memo-template {
     max-width: 50rem;
-    max-height: 6rem;
+    max-height: 12rem;
 
     padding: 0.9rem;
     border: 0.1rem solid cadetblue;
@@ -46,6 +50,39 @@
     width: 1.2rem;
     height: 1.2rem;
     right: 0.2rem;
+}
+
+.memo-pages-block {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 6rem;
+}
+
+.memo-pages-front {
+    display: flex;
+}
+
+.memo-pages-rear {
+    display: flex;
+}
+
+.memo-pages-head {
+    font-size: 1.1rem;
+    margin-top: 0.25rem;
+    margin-right: 1.5rem;
+    opacity: 50%;
+}
+
+#memo-pages {
+    height: 2.4rem;
+    margin-right: 2rem;
+}
+
+.memo-pages-tail {
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+    margin-left: 1.5rem;
+    opacity: 50%;
 }
 
 .edit-modal {
