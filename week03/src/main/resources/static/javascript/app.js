@@ -35,9 +35,21 @@ function memoBoxValidationCheck() {
     return true;
 }
 
-// 내가 작성한 글을 보여주는 함수
 function showMyMemos() {
-
+    let memoPostField = document.querySelector('.memo-list');
+    memoPostField.innerHTML = ''
+    $.ajax({
+        type: "GET",
+        url: "/api/memos",
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+            for (let i = 0; i < response.length; i++) {
+                console.log(`response.length:${response.length}`);
+                makeMemos(response[i])
+            }
+            console.log(`totalMemos: ${totalMemos}`)
+        }
+    })
 }
 
 // 제목과 내용을 기입할 시 DB로 데이터를 보내는 함수
@@ -80,7 +92,7 @@ function showArrowPagination(currentPage, pageSize, totalPages, totalMemos) {
         <div class="memo-pages-tail">
         <span class="memo-offset">${currentPage * pageSize + 1}</span>
         -
-        <span>${currentPage * pageSize + pageSize}</span>
+        <span class="memo-arrival">${currentPage * pageSize + pageSize}</span>
          of 
          <span>${totalMemos}</span>
          </div>`
@@ -158,7 +170,7 @@ function makeMemos(res) {
                 <div>
                     <i class="far fa-trash-alt" onclick="deleteMemo(${data.id})"></i>
                     <i class="far fa-edit" onclick="openEditMemo(${data.id})"></i>
-                    <a href="html/comments.html?id=${data.id}"><i class="far fa-comment"></i></a>
+                    <a href="comments.html?id=${data.id}"><i class="far fa-comment"></i></a>
                 </div>
             </div>
             <div class='${data.id}-memo-title memo-title'>${data.title}</div>
@@ -240,6 +252,13 @@ function closeEditMemo() {
 function editMemo(id) {
     let title = document.getElementsByClassName(`${id}-m-title`)[0].value;
     let content = document.getElementsByClassName(`${id}-m-content`)[0].value;
+
+    let pageStart = Number(document.querySelector('.memo-offset').textContent);
+    let pageEnd = Number(document.querySelector('.memo-arrival').textContent);
+
+    let pageSize = pageEnd - pageStart + 1;
+    let currentPage = (pageEnd / pageSize) -1;
+
     let data = {'title': title, 'contents': content};
 
     $.ajax({
@@ -248,7 +267,8 @@ function editMemo(id) {
         contentType: "application/json",
         data: JSON.stringify(data),
         success: function (res) {
-            window.location.reload();
+            closeEditMemo();
+            getSomeMemos(currentPage, pageSize)
             console.log(`id: ${res}번 게시물이 수정되었습니다.`);
         }
     });
@@ -256,11 +276,17 @@ function editMemo(id) {
 
 // 메모를 삭제하는 함수
 function deleteMemo(id) {
+    let pageStart = Number(document.querySelector('.memo-offset').textContent);
+    let pageEnd = Number(document.querySelector('.memo-arrival').textContent);
+
+    let pageSize = pageEnd - pageStart + 1;
+    let currentPage = (pageEnd / pageSize) -1;
+
     $.ajax({
         type: "DELETE",
         url: `/api/memos/${id}`,
         success: function (response) {
-            getMemos();
+            getSomeMemos(currentPage, pageSize)
             console.log(`id ${response} is deleted`);
         }
     })

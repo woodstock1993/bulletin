@@ -1,6 +1,23 @@
-.login-user-header {
+.login-user-wrapper {
     display: flex;
     justify-content: center;
+    margin-top: 5rem;
+}
+
+.login-user-header {
+    display: flex;
+    justify-content: space-between;
+    max-width: 50rem;
+    width: 33rem;
+    margin-right: 1rem;
+}
+
+.home-btn {
+    cursor: pointer;
+}
+
+.login-user-page {
+    cursor: pointer;
 }
 
 .logout-text {

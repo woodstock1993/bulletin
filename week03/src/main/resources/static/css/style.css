@@ -6,6 +6,11 @@ body {
     margin: 0px;
 }
 
+#login-title {
+    display: flex;
+    justify-content: center;
+}
+
 #search-result-box {
     margin-top: 15px;
 }

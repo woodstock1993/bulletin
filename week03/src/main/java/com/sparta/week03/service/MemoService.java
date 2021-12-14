@@ -44,6 +44,12 @@ public class MemoService {
         return memoRepository.findAllByUserId(userId);
     }
 
+    public Memo getMemo(Long id) {
+        return memoRepository.findById(id).orElseThrow(
+                ()->new NullPointerException("메모에 해당하는 아이디가 없습니다.")
+        );
+    }
+
     public List<Memo> findAllMemos() {
         return memoRepository.findAll();
     }

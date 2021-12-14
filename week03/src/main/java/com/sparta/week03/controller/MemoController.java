@@ -45,8 +45,8 @@ public class MemoController {
     }
 
     @GetMapping("/api/memos/{id}")
-    public List<Memo> getOneMemo(@PathVariable Long id) {
-        return memoService.getMemos(id);
+    public Memo getOneMemo(@PathVariable Long id) {
+        return memoService.getMemo(id);
     }
 
 

@@ -15,8 +15,8 @@
                                       which will make your life happy">
 
     <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="../css/memos.css">
-    <link rel="stylesheet" type="text/css" href="../css/comments.css">
+    <link rel="stylesheet" type="text/css" href="css/memos.css">
+    <link rel="stylesheet" type="text/css" href="css/comments.css">
 
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
@@ -25,18 +25,24 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <!-- JS -->
-    <script defer src="../javascript/comments.js"></script>
+    <script defer src="javascript/comments.js"></script>
 
     <title>Comments</title>
 </head>
 <body>
     <div class="memo-and-comments">
+        <div class="memo-block-wrapper">
         <div class="memo-block"></div>
-        <div class="comments-header">
-            <div>댓글</div>
-            <i class="far fa-comment" onclick="makeComments()"></i>
         </div>
-        <div class="comments-block"></div>
+        <div class="comments-body-wrapper">
+            <div>
+            <div class="comments-header">
+                <div>댓글</div>
+                <i class="far fa-comment" onclick="makeComments()"></i>
+            </div>
+            <div class="comments-block"></div>
+            </div>
+        </div>
     </div>
     <div class="comments-modal hide">
         <div class="comments-modal-overlay"></div>

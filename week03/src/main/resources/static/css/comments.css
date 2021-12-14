@@ -1,3 +1,13 @@
+.memo-block-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.comments-body-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
 .comments-header {
     margin-top: 5rem;
 
@@ -16,6 +26,7 @@
     border: 0.1rem solid cadetblue;
     font-size: 0.9rem;
     max-width: 50rem;
+    width: 35rem;
     padding: 0.9rem;
 }
 
