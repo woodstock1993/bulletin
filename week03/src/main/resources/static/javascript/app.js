@@ -35,6 +35,11 @@ function memoBoxValidationCheck() {
     return true;
 }
 
+// 내가 작성한 글을 보여주는 함수
+function showMyMemos() {
+
+}
+
 // 제목과 내용을 기입할 시 DB로 데이터를 보내는 함수
 function putMemoTitleAndContent() {
     if (memoBoxValidationCheck() === true) {

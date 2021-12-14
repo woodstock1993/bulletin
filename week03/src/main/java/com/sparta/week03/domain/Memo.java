@@ -21,17 +21,22 @@ public class Memo extends Timestamped{ // 생성,수정 시간을 자동으로 �
     @Column(nullable = false)
     private String contents;
 
+    @Column(nullable = false)
+    private Long userId;
+
     @OneToMany(mappedBy="memo")
     private List<Comments> comments;
 
-    public Memo(String title, String contents) {
+    public Memo(String title, String contents, Long userId) {
         this.title = title;
         this.contents = contents;
+        this.userId = userId;
     }
 
-    public Memo(MemoRequestDto requestDto) {
+    public Memo(MemoRequestDto requestDto, Long userId) {
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
+        this.userId = userId;
     }
 
     public void update(MemoRequestDto requestDto) {
