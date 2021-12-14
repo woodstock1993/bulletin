@@ -4,10 +4,12 @@ import com.sparta.week03.domain.APIResponse;
 import com.sparta.week03.domain.Memo;
 import com.sparta.week03.repository.MemoRepository;
 import com.sparta.week03.dto.MemoRequestDto;
+import com.sparta.week03.security.UserDetailsImpl;
 import com.sparta.week03.service.MemoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -37,20 +39,25 @@ public class MemoController {
     }
 
     @GetMapping("/api/memos")
-    public List<Memo> getMemos() {
-        return memoRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+    public List<Memo> getMemos(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Long userId = userDetails.getUser().getId();
+        return memoService.getMemos(userId);
     }
 
     @GetMapping("/api/memos/{id}")
-    public Memo getOneMemo(@PathVariable Long id) {
+    public List<Memo> getOneMemo(@PathVariable Long id) {
         return memoService.getMemos(id);
     }
 
 
     @PostMapping("/api/memos")
-    public Memo createMemo(@RequestBody MemoRequestDto requestDto) {
-        Memo memo = new Memo(requestDto);
-        return memoRepository.save(memo);
+    public Memo createMemo(@RequestBody MemoRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        //로그인 되어 있는 ID를 가져올 것이다. user의 이름이 아닌 table의 id를 가져 올 것이다.
+        Long userId = userDetails.getUser().getId();
+
+        Memo memo = memoService.createMemo(requestDto, userId);
+        return memo;
     }
 
     @PutMapping("/api/memos/{id}")

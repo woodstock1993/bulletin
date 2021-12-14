@@ -40,10 +40,8 @@ public class MemoService {
         commentRepository.save(comment);
     }
 
-    public Memo getMemos(Long id) {
-        Memo memo = memoRepository.findById(id).orElseThrow(
-                () -> new NullPointerException("해당 아이디가 존재하지 않습니다."));
-        return memo;
+    public List<Memo> getMemos(Long userId) {
+        return memoRepository.findAllByUserId(userId);
     }
 
     public List<Memo> findAllMemos() {
@@ -57,5 +55,12 @@ public class MemoService {
     public Page<Memo> findMemosWithPaginationAndSort(int offset, int pageSize, String field) {
         Page<Memo> memos =  memoRepository.findAll(PageRequest.of(offset, pageSize).withSort(Sort.Direction.DESC, field));
         return memos;
+    }
+
+    @Transactional
+    public Memo createMemo(MemoRequestDto requestDto, Long userId) {
+        Memo memo = new Memo(requestDto, userId);
+        memoRepository.save(memo);
+        return memo;
     }
 }

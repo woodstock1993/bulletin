@@ -30,6 +30,16 @@
     <title>Bulletin</title>
 </head>
 <body>
+<div class="login-user-block" style="position:relative">
+    <div class="login-user-header">
+        <div id="header-title-login-user">
+            <span th:text="${username}">님의</span>
+        </div>
+        <div id ="header-title-select-shop">&nbsp;Bulletin</div>
+    </div>
+    <div class="logout-text"><a href="/user/logout">로그아웃</a></div>
+    <div class="login-user-page" ><div onclick="showMyMemos()">My Page</div></div>
+</div>
 <div id="memo-home">
 <div>
 <div class ="memo-block">
