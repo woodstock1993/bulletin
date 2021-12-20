@@ -148,6 +148,9 @@ function sendMemoData() {
         }),
         success: function (res) {
             window.location.reload();
+        },
+        error: function(request, status, error) {
+            alert("ERROR: "+request.status + "\n" + "회원 가입 후 글 작성이 가능합니다.");
         }
     })
 }

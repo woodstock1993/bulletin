@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@Controller
+@Controller //
 public class HomeController {
     //스피링 시큐리티가 로그인된 사용자의 정보를 넘겨주게 됨, 타임리프와 관련된 부분
     @GetMapping("/login/user")

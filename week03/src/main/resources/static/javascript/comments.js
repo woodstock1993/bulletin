@@ -57,6 +57,9 @@ function deleteComments(comments_id, memo_id ) {
         url: `/api/comments/${comments_id}`,
         success: function(response) {
             console.log(`comments id ${response} is deleted`);
+        },
+        error: function(request, status, error) {
+            alert("ERROR: "+request.status + "\n" + "글 작성자만 삭제가 가능합니다.");
         }
     })
     window.location.reload();
@@ -92,6 +95,9 @@ function editComments(comments_id, memo_id) {
         }),
         success: function(response) {
             console.log(`comments id: ${response} 가 성공적으로 업데이트되었습니다.`);
+        },
+        error: function(request, status, error) {
+            alert("ERROR: "+request.status + "\n" + "작성자만 수정이 가능합니다.");
         }
     })
 
@@ -154,6 +160,9 @@ function putComments(id) {
         }),
         success: function(response) {
             drawComments(id);
+        },
+        error: function(request, status, error) {
+            alert("ERROR: "+request.status + "\n" + "회원 가입 후 글 작성이 가능합니다.");
         }
     })
 }
