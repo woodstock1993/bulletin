@@ -1,7 +1,6 @@
 let totalMemos = 0;
 
 $(document).ready(function () {
-    paintMemoBox();
     getSomeMemos(0, 5);
 })
 
@@ -40,7 +39,7 @@ function showMyMemos() {
     memoPostField.innerHTML = ''
     $.ajax({
         type: "GET",
-        url: "/api/memos",
+        url: "/api/user/memos",
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
             for (let i = 0; i < response.length; i++) {
@@ -192,6 +191,7 @@ function getSomeMemos(currentPage, pageSize) {
         url: `/paginationAndSort/${currentPage}/${pageSize}/${field}`,
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
+            paintMemoBox();
             let res = response.response.content;
             console.log(res);
             totalMemos = response.response.totalElements;

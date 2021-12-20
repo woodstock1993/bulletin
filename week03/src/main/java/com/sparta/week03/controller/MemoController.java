@@ -2,13 +2,14 @@ package com.sparta.week03.controller;
 
 import com.sparta.week03.domain.APIResponse;
 import com.sparta.week03.domain.Memo;
+import com.sparta.week03.domain.User;
 import com.sparta.week03.repository.MemoRepository;
 import com.sparta.week03.dto.MemoRequestDto;
 import com.sparta.week03.security.UserDetailsImpl;
 import com.sparta.week03.service.MemoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -38,7 +39,8 @@ public class MemoController {
         return new APIResponse<>(memosWithPagination.getSize(), memosWithPagination);
     }
 
-    @GetMapping("/api/memos")
+    //로그인한 유저가 작성한 글을 보여주는 API
+    @GetMapping("/api/user/memos")
     public List<Memo> getMemos(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         Long userId = userDetails.getUser().getId();
         return memoService.getMemos(userId);
@@ -49,6 +51,11 @@ public class MemoController {
         return memoService.getMemo(id);
     }
 
+    @GetMapping("/api/memos")
+    public List<Memo> getAllMemos() {
+        String id = "id";
+        return memoService.findMemosWithSorting(id);
+    }
 
     @PostMapping("/api/memos")
     public Memo createMemo(@RequestBody MemoRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -60,12 +67,14 @@ public class MemoController {
         return memo;
     }
 
+    // 고치는건 특정 유저 조건이 필요함
     @PutMapping("/api/memos/{id}")
     public Long updateMemo(@PathVariable Long id, @RequestBody MemoRequestDto requestDto) {
         memoService.update(id, requestDto);
         return id;
     }
 
+    // 지우는건 특정 유저 조건이 필요함
     @DeleteMapping("/api/memos/{id}")
     public Long deleteMemo(@PathVariable Long id) {
         memoRepository.deleteById(id);

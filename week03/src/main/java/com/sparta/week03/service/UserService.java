@@ -22,7 +22,6 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-
     public void registerUser(SignupRequestDto requestDto) {
         String username = requestDto.getUsername();
         // 회원 ID 중복 확인
@@ -45,5 +44,11 @@ public class UserService {
 
         User user = new User(username, password, email, role);
         userRepository.save(user);
+    }
+
+    public User findById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(
+                ()-> new NullPointerException("일치하는 아이디가 없습니다.")
+        );
     }
 }

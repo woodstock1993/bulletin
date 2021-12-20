@@ -7,6 +7,7 @@ import com.sparta.week03.repository.CommentsRepository;
 import com.sparta.week03.repository.MemoRepository;
 import com.sparta.week03.service.CommentsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,12 +35,14 @@ public class CommentsController {
         return commentsRepository.save(comments);
     }
 
+    // 고치는건 특정 User 조건이 필요함
     @PutMapping("/api/comments/{comments_id}")
     public Long editComments(@PathVariable Long comments_id, @RequestBody CommentsRequestDto commentsRequestDto) {
         commentsService.commentsUpdate(comments_id, commentsRequestDto);
         return comments_id;
     }
 
+    // 지우는건 특정 User 조건이 필요함
     @DeleteMapping("/api/comments/{comments_id}")
     public Long deleteComments(@PathVariable Long comments_id) {
         Comments comments = commentsRepository.findById(comments_id).orElseThrow(

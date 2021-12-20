@@ -153,7 +153,6 @@ function putComments(id) {
             comments: `${commentsValue}`
         }),
         success: function(response) {
-            console.log(response);
             drawComments(id);
         }
     })

@@ -1,14 +1,23 @@
 package com.sparta.week03.controller;
 
+import com.sparta.week03.domain.User;
 import com.sparta.week03.dto.SignupRequestDto;
+import com.sparta.week03.security.UserDetailsImpl;
 import com.sparta.week03.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class UserController {
 
     private final UserService userService;
@@ -19,28 +28,18 @@ public class UserController {
         this.userService = userService;
     }
 
-    // 회원 로그인 페이지
-    @GetMapping("/user/login")
-    public String login() {
-        return "login";
-    }
-
-    @GetMapping("/user/login/error")
-    public String loginError(Model model) {
-        model.addAttribute("loginError", true);
-        return "login";
+    @GetMapping("/user/signup")
+    public void userSignup() {
     }
 
     // 회원 가입 페이지
-    @GetMapping("/user/signup")
-    public String signup() {
-        return "signup";
+    @GetMapping("/user/login")
+    public void userLogin(@RequestBody SignupRequestDto signupRequestDto) {
     }
 
     // 회원 가입 요청 처리
     @PostMapping("/user/signup")
-    public String registerUser(SignupRequestDto requestDto) {
+    public void registerUser(@RequestBody SignupRequestDto requestDto) {
         userService.registerUser(requestDto);
-        return "redirect:/";
     }
 }
