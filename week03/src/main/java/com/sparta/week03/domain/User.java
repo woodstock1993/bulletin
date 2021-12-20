@@ -17,6 +17,15 @@ public class User extends Timestamped {
         this.password = password;
         this.email = email;
         this.role = role;
+        this.kakaoId = null;
+    }
+
+    public User(String username, String password, String email, UserRole role, Long kakaoId) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.kakaoId = kakaoId;
     }
     // ID가 자동으로 생성 및 증가합니다.
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,4 +45,7 @@ public class User extends Timestamped {
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
+
+    @Column(nullable = true)
+    private Long kakaoId;
 }

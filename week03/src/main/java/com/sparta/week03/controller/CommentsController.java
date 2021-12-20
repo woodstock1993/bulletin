@@ -18,7 +18,6 @@ public class CommentsController {
 
     private final MemoRepository memoRepository;
     private final CommentsRepository commentsRepository;
-
     private final CommentsService commentsService;
 
     @GetMapping("/api/comments/{id}")
@@ -27,6 +26,7 @@ public class CommentsController {
         return commentsRepository.findByMemoId(id);
     }
 
+    @Secured("USER_ROLE")
     @PostMapping("/api/comments/{id}")
     public Comments createComments(@PathVariable Long id, @RequestBody CommentsRequestDto commentsRequestDto) {
         Memo memo = memoRepository.findById(id).orElseThrow(
@@ -36,6 +36,7 @@ public class CommentsController {
     }
 
     // 고치는건 특정 User 조건이 필요함
+    @Secured("USER_ROLE")
     @PutMapping("/api/comments/{comments_id}")
     public Long editComments(@PathVariable Long comments_id, @RequestBody CommentsRequestDto commentsRequestDto) {
         commentsService.commentsUpdate(comments_id, commentsRequestDto);
@@ -43,6 +44,7 @@ public class CommentsController {
     }
 
     // 지우는건 특정 User 조건이 필요함
+    @Secured("USER_ROLE")
     @DeleteMapping("/api/comments/{comments_id}")
     public Long deleteComments(@PathVariable Long comments_id) {
         Comments comments = commentsRepository.findById(comments_id).orElseThrow(

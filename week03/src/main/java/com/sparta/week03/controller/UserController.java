@@ -42,4 +42,13 @@ public class UserController {
     public void registerUser(@RequestBody SignupRequestDto requestDto) {
         userService.registerUser(requestDto);
     }
+
+    //kakao
+    @GetMapping("/user/kakao/callback")
+    public String kakaoLogin(String code) {
+        // authorizedCode: 카카오 서버로부터 받은 인가 코드
+//        userService.kakaoLogin(code);
+
+        return "redirect:/";
+    }
 }

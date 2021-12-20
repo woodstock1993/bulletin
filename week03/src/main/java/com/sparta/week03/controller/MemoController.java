@@ -2,7 +2,6 @@ package com.sparta.week03.controller;
 
 import com.sparta.week03.domain.APIResponse;
 import com.sparta.week03.domain.Memo;
-import com.sparta.week03.domain.User;
 import com.sparta.week03.repository.MemoRepository;
 import com.sparta.week03.dto.MemoRequestDto;
 import com.sparta.week03.security.UserDetailsImpl;
@@ -22,24 +21,25 @@ public class MemoController {
     private final MemoService memoService;
 
     @GetMapping("/posts")
-    private APIResponse<List<Memo>> gettingMemos() {
+    public APIResponse<List<Memo>> gettingMemos() {
         List<Memo> allMemos = memoService.findAllMemos();
         return new APIResponse<>(allMemos.size(), allMemos);
     }
 
     @GetMapping("/posts/{field}")
-    private APIResponse<List<Memo>> findMemosWithSorting(@PathVariable String field) {
+    public APIResponse<List<Memo>> findMemosWithSorting(@PathVariable String field) {
         List<Memo> allMemos = memoService.findMemosWithSorting(field);
         return new APIResponse<>(allMemos.size(), allMemos);
     }
 
     @GetMapping("/paginationAndSort/{offset}/{pageSize}/{field}")
-    private APIResponse<Page<Memo>> findMemosWithSorting(@PathVariable int offset, @PathVariable int pageSize, @PathVariable String field) {
+    public APIResponse<Page<Memo>> findMemosWithSorting(@PathVariable int offset, @PathVariable int pageSize, @PathVariable String field) {
         Page<Memo> memosWithPagination = memoService.findMemosWithPaginationAndSort(offset, pageSize, field);
         return new APIResponse<>(memosWithPagination.getSize(), memosWithPagination);
     }
 
     //로그인한 유저가 작성한 글을 보여주는 API
+    @Secured("USER_ROLE")
     @GetMapping("/api/user/memos")
     public List<Memo> getMemos(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         Long userId = userDetails.getUser().getId();
@@ -57,6 +57,7 @@ public class MemoController {
         return memoService.findMemosWithSorting(id);
     }
 
+    @Secured("USER_ROLE")
     @PostMapping("/api/memos")
     public Memo createMemo(@RequestBody MemoRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
@@ -68,6 +69,7 @@ public class MemoController {
     }
 
     // 고치는건 특정 유저 조건이 필요함
+    @Secured("USER_ROLE")
     @PutMapping("/api/memos/{id}")
     public Long updateMemo(@PathVariable Long id, @RequestBody MemoRequestDto requestDto) {
         memoService.update(id, requestDto);
@@ -75,6 +77,7 @@ public class MemoController {
     }
 
     // 지우는건 특정 유저 조건이 필요함
+    @Secured("USER_ROLE")
     @DeleteMapping("/api/memos/{id}")
     public Long deleteMemo(@PathVariable Long id) {
         memoRepository.deleteById(id);
