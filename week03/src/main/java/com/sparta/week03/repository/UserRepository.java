@@ -12,3 +12,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // Optional 이라는 것은 class를 감싸서 사용하고 null check 용도로 사용한다.
     Optional<User> findByKakaoId(Long kakaoId);
 }
+
+
+

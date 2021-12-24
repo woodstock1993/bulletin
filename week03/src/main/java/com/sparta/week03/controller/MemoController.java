@@ -57,14 +57,14 @@ public class MemoController {
         return memoService.findMemosWithSorting(id);
     }
 
-    @Secured("USER_ROLE")
     @PostMapping("/api/memos")
-    public Memo createMemo(@RequestBody MemoRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-
-        //로그인 되어 있는 ID를 가져올 것이다. user의 이름이 아닌 table의 id를 가져 올 것이다.
+    public Memo createMemo(@RequestBody MemoRequestDto requestDto, UserDetailsImpl userDetails) {
+        System.out.println(requestDto);
+        System.out.println(userDetails);
+        System.out.println("where error occurs before createMemo?");
         Long userId = userDetails.getUser().getId();
-
         Memo memo = memoService.createMemo(requestDto, userId);
+        System.out.println("where error occurs after createMemo?");
         return memo;
     }
 

@@ -20,14 +20,24 @@
     cursor: pointer;
 }
 
-.logout-text {
-    display: flex;
-    justify-content: flex-end;
+.login-user-section {
+    text-decoration: none;
+    color: black;
 }
 
 .login-user-page {
     display: flex;
     justify-content: center;
+}
+
+.user-logout {
+    text-decoration: none;
+    color: black;
+}
+
+.logout-text {
+    display: flex;
+    justify-content: flex-end;
 }
 
 #memo-home {

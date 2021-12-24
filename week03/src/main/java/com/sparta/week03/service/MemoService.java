@@ -13,7 +13,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor // final 있는 부분 있으면 자동으로 넣어줄게
@@ -59,10 +58,10 @@ public class MemoService {
     }
 
     public Page<Memo> findMemosWithPaginationAndSort(int offset, int pageSize, String field) {
-        Page<Memo> memos =  memoRepository.findAll(PageRequest.of(offset, pageSize).withSort(Sort.Direction.DESC, field));
+        Page<Memo> memos =  memoRepository.findAll(PageRequest.of(offset, pageSize, Sort.by(field).descending()));
         return memos;
     }
-
+    
     @Transactional
     public Memo createMemo(MemoRequestDto requestDto, Long userId) {
         Memo memo = new Memo(requestDto, userId);
